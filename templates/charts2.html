@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/justified-nav/justified-nav.css" rel="stylesheet">
+    <script src="{{ url_for('static', filename='graphs.js') }}" type="text/javascript" charset="utf-8"></script>
+    <style>
+      .axis path {
+        fill: none;
+        stroke: #777;
+        shape-rendering: crispEdges;
+      }
+      .axis text {
+        font-family: Lato;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>CS 5555 - Lab 3 </h1>
+    <!-- main SVG element -->
+    <svg id="visualisationPain" width="1000" height="500"></svg>
+    <svg id="visualisationInt" width="1000" height="500"></svg>
+    <svg id="visualisationMoves" width="1000" height="500"></svg>
+    <script>
+
+    d3.json("/survey", function (data) {
+      console.log(data);
+      var vis1 = d3.select("#visualisationPain");
+      graphSurvey(vis1, data, 'averagePainIntensity');
+      var vis2 = d3.select("#visualisationInt");
+      graphSurvey(vis2, data, 'painInterferenceDayToDayActivities');
+    });  
+
+    d3.json("/moves", function (data) {
+      console.log(data);
+      var vis3 = d3.select("#visualisationMoves");
+      graphMoves(vis3, data);
+    });  
+      
+    </script>
+
+  </body>
+</html>

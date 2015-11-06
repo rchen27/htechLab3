@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clinical Trial Dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/sb-admin.css') }}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='graphs.js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Clinical Trial Dashboard</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Roger Chen <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="/"><i class="fa fa-fw fa-dashboard"></i> Participants</a>
+                    </li>
+                    <li class="active">
+                        <a href="/charts"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Charts
+                        </h1>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <!-- Flot Charts -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="page-header">Moves Data</h2>
+                        <p class="lead">Moves is used to track location and steps taken. We pull down data for each participant through their API and graph it here.</p>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Graph of Steps Taken Each Day</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                    <section class="flot-chart-content" id="flot-line-chart">
+                                        <svg id="visualisationMoves" width="1000" height="380"></svg>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Table of Location Activity</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                <section class="table-responsive" id ='locationTable'>
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Participant ID</th>
+                                                <th>Clinical Trial</th>
+                                                <th>Avg Number of Locations Per Day</th>
+                                                <th>Avg Hours Spent at Work</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="page-header">Ohmage Survey Data</h2>
+                        <p class="lead">Participants take daily surveys where they gauge how much pain they are in and how much that pain has interfered with their day-to-day activities.</p>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Graph of Average Daily Pain</h3>
+                            </div>
+                            <div class="panel-body">
+                                <section id="painChart">
+                                    <svg id="visualisationPain" width="1000" height="380"></svg>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Graph of Average Interference With Activities</h3>
+                            </div>
+                            <div class="panel-body">
+                                <section id="activityChart">
+                                    <svg id="visualisationInt" width="1000" height="380"></svg>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+    <script>
+        // loader settings
+        var opts = {
+          lines: 9, // The number of lines to draw
+          length: 9, // The length of each line
+          width: 5, // The line thickness
+          radius: 14, // The radius of the inner circle
+          color: '#EE3124', // #rgb or #rrggbb or array of colors
+          speed: 1.9, // Rounds per second
+          trail: 40, // Afterglow percentage
+          className: 'spinner', // The CSS class to assign to the spinner
+        };
+        var target1 = document.getElementById('flot-line-chart');
+        var target2 = document.getElementById('painChart');
+        var target3 = document.getElementById('activityChart');  
+        var target4 = document.getElementById('locationTable');  
+        var spinner1 = new Spinner(opts).spin(target1);
+        var spinner2 = new Spinner(opts).spin(target2);
+        var spinner3 = new Spinner(opts).spin(target3);
+        var spinner4 = new Spinner(opts).spin(target4);
+
+        var vis1 = d3.select("#visualisationPain");
+        var vis2 = d3.select("#visualisationInt");
+        var vis3 = d3.select("#visualisationMoves");
+
+        d3.json("/survey", function (data) {
+            spinner2.stop();
+            spinner3.stop();      
+            graphSurvey(vis1, data, 'averagePainIntensity');
+            graphSurvey(vis2, data, 'painInterferenceDayToDayActivities');
+        });  
+
+        d3.json("/moves", function (data) {
+            spinner1.stop();
+            spinner4.stop();
+            console.log(data);
+            graphMoves(vis3, data);
+            locationTable(data[0], '24501');
+            locationTable(data[1], '24502')
+        });  
+
+      
+    </script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='libs/jquery.js') }}"></script>
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='libs/bootstrap.min.js') }}"></script>
+
+</body>
+
+</html>
